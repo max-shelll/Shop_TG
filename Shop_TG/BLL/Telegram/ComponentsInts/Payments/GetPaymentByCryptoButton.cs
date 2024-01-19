@@ -39,7 +39,7 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
 
                 var payments = await _paymentsRepo.GetById(0);
 
-                string text = $"🎯 **Реквизиты: {payments.Crypto}**\n**К оплате:** {command.Data.Price}";
+                string text = $"🎯 **Реквизиты:** `{payments.Crypto}`\n**К оплате:** {command.Data.Price}";
 
                 var options = new OptionMessage()
                 {
@@ -50,7 +50,7 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
                     ParseMode = ParseMode.Markdown,
                 };
 
-                await Message.Send(botClient: botClient, update: update, msg: text);
+                await Message.Send(botClient: botClient, update: update, msg: text, option: options);
             }
             catch (Exception ex)
             {

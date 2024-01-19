@@ -36,7 +36,7 @@ namespace Shop_TG.BLL.Telegram.Commands
                 {
                     MenuReplyKeyboardMarkup = MenuGenerator.ReplyKeyboard(1, new List<KeyboardButton>()
                     {
-                       new("Категории 🛒"),
+                       new("Каталог 🛒"),
                        new("Поддержка 📨"),
                        new("О нас 📢"),
                     }),

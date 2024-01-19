@@ -41,11 +41,9 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
 
                 string text =
                 $"""
-                ╭┈➢🎡 **Товар: {item.Name}**"
-                ├*
-                ├> **Описание:** `{item.Description}`
-                ├*
-                ╰┈➢ **Цена: {item.Price}**
+                🎡 **Товар: {item.Name}**
+                **Описание:** `{item.Description}`
+                **Цена: {item.Price}**
                 """;
 
                 var options = new OptionMessage()
@@ -58,7 +56,7 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
                     ParseMode = ParseMode.Markdown,
                 };
 
-                await Message.Send(botClient: botClient, update: update, msg: text);
+                await Message.Send(botClient: botClient, update: update, msg: text, option: options);
             }
             catch (Exception ex)
             {

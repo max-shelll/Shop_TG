@@ -47,9 +47,9 @@ namespace Shop_TG.BLL.Telegram.Commands
                 {
                     MenuInlineKeyboardMarkup = MenuGenerator.InlineKeyboard(3, new()
                     {
-                        new InlineCallback("Категории", AdminBtnHeaders.EditCard),
-                        new InlineCallback("Редактировать карту", AdminBtnHeaders.EditCard),
-                        new InlineCallback("Редактировать крипту", AdminBtnHeaders.EditCrypto),
+                        new InlineCallback("Товары", AdminBtnHeader.ShowShopItems),
+                        new InlineCallback("Карта", AdminBtnHeader.EditCard),
+                        new InlineCallback("Крипто-кошелек", AdminBtnHeader.EditCrypto),
                     }),
                     ParseMode = ParseMode.Markdown,
                 };

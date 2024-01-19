@@ -33,7 +33,7 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
             _config = config;
         }
 
-        [InlineCallbackHandler<ShopItemBtnHeader>(ShopItemBtnHeader.BuyItemByCard)]
+        [InlineCallbackHandler<ShopItemBtnHeader>(ShopItemBtnHeader.PaymentComplete)]
         public async Task Execute(ITelegramBotClient botClient, Update update)
         {
             try

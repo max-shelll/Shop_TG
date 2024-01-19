@@ -29,7 +29,6 @@ namespace Shop_TG
                  .AddSingleton<MissingCommandHandler>()
                  .AddSingleton<CheckUserPrivilegeHandler>()
                  /// Repositories
-                 .AddSingleton<ShopCategoryRepository>()
                  .AddSingleton<ShopItemRepository>()
                  .AddSingleton<PaymentRepository>()
                  /// Client

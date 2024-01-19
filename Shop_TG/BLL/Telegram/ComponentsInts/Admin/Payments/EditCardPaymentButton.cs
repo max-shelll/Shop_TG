@@ -17,23 +17,23 @@ using Shop_TG.BLL.Telegram.Handlers;
 using Shop_TG.DAL.Repositories;
 using PRTelegramBot.Extensions;
 
-namespace Shop_TG.BLL.Telegram.ComponentsInts.Admin
+namespace Shop_TG.BLL.Telegram.ComponentsInts.Admin.Payments
 {
-    public class EditCryptoPaymentButton
+    public class EditCardPaymentButton
     {
         private readonly PaymentRepository _paymentRepo;
 
-        public EditCryptoPaymentButton(PaymentRepository paymentRepo)
+        public EditCardPaymentButton(PaymentRepository paymentRepo)
         {
             _paymentRepo = paymentRepo;
         }
 
-        [InlineCallbackHandler<AdminBtnHeaders>(AdminBtnHeaders.EditCard)]
+        [InlineCallbackHandler<AdminBtnHeader>(AdminBtnHeader.EditCard)]
         public async Task Execute(ITelegramBotClient botClient, Update update)
         {
             try
             {
-                string text = $"Введите данные крипто-кошелька";
+                string text = $"Введите данные карты";
 
                 update.RegisterStepHandler(new StepTelegram(FillData, DateTime.Now.AddMinutes(5)));
 
@@ -53,12 +53,12 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Admin
 
                 var payments = await _paymentRepo.GetById(0);
 
-                payments.Crypto = message.Text;
+                payments.Card = message.Text;
                 await _paymentRepo.Update(payments);
 
                 update.ClearStepUserHandler();
 
-                await Message.Send(botClient: botClient, update: update, msg: "✔ Реквизиты крипто-кошелька обновленные");
+                await Message.Send(botClient: botClient, update: update, msg: "✔ Реквизиты карты обновленные");
             }
             catch (Exception ex)
             {

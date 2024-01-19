@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 namespace Shop_TG.DAL.Headers
 {
     [InlineCommand]
-    public enum CategoryBtnHeader
+    public enum AdminBtnHeader
     {
-        GetItems = 1000,
+        EditCard = 10000,
+        EditCrypto,
+        ShowShopItems,
+        AddShopItem,
+        RemoveShopItem
     }
 }

@@ -21,37 +21,37 @@ using PRTelegramBot.Interface;
 
 namespace Shop_TG.BLL.Telegram.Commands
 {
-    public class Category
+    public class Catalog
     {
-        private readonly ShopCategoryRepository _categoryRepo;
+        private readonly ShopItemRepository _shopRepo;
 
-        public Category(ShopCategoryRepository categoryRepo)
+        public Catalog(ShopItemRepository shopRepo)
         {
-            _categoryRepo = categoryRepo;
+            _shopRepo = shopRepo;
         }
 
-        [ReplyMenuHandler("Категории 🛒")]
+        [ReplyMenuHandler("Каталог 🛒")]
         public async Task Execute(ITelegramBotClient botClient, Update update)
         {
             try
             {
-                var categories = await _categoryRepo.GetAll();
+                var shopItems = await _shopRepo.GetAll();
 
-                if (categories == null || categories.Count <= 0)
+                if (shopItems == null || shopItems.Count <= 0)
                 {
-                    await Message.Send(botClient: botClient, update: update, msg: "💢 В данный момент категории отсутствуют");
+                    await Message.Send(botClient: botClient, update: update, msg: "💢 В данный момент товары отсутствуют");
                     return;
                 }
 
-                var text = "🍁 **Выберите категорию:**";
+                var text = "🍁 **Выберите товар:**";
 
                 var options = new OptionMessage()
                 {
-                    MenuInlineKeyboardMarkup = MenuGenerator.InlineKeyboard(1, await GetCategoryBtns(categories)),
+                    MenuInlineKeyboardMarkup = MenuGenerator.InlineKeyboard(1, await GetShopItemBtns(shopItems)),
                     ParseMode = ParseMode.Markdown,
                 };
 
-                await Message.Send(botClient: botClient, update: update, msg: text);
+                await Message.Send(botClient: botClient, update: update, msg: text, option: options);
             }
             catch (Exception ex)
             {
@@ -59,17 +59,17 @@ namespace Shop_TG.BLL.Telegram.Commands
             }
         }
 
-        private async Task<List<IInlineContent>> GetCategoryBtns(List<ShopCategory> categories)
-        {
-            var categoryBtnList = new List<IInlineContent>();
+        private async Task<List<IInlineContent>> GetShopItemBtns(List<ShopItem> shopItems)
+        { 
+            var buttonList = new List<IInlineContent>();
 
-            var tasks = categories.Select(async category =>
+            var tasks = shopItems.Select(async item =>
             {
-                categoryBtnList.Add(new InlineCallback(category.Name, CategoryBtnHeader.GetItems, new CategoryBtnParams(category.Id)));
+                buttonList.Add(new InlineCallback(item.Name, ShopItemBtnHeader.GetDetails, new ShopItemBtnParams(item.Id)));
             });
 
             await Task.WhenAll(tasks);
-            return categoryBtnList;
+            return buttonList;
         }
     }
 }
