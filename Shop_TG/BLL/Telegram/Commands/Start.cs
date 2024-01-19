@@ -42,7 +42,7 @@ namespace Shop_TG.BLL.Telegram.Commands
                     }),
                 };
 
-                await Message.Send(botClient: botClient, update: update, msg: welcomeMessage, option: options);
+                await Message.SendPhoto(botClient: botClient, chatId: update.Message.From.Id, msg: welcomeMessage, filePath: "Images/Welcome.jpg", option: options);
             }
             catch (Exception ex)
             {

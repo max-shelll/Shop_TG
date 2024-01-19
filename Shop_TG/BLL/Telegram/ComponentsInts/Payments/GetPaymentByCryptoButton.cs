@@ -50,7 +50,7 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
                     ParseMode = ParseMode.Markdown,
                 };
 
-                await Message.Send(botClient: botClient, update: update, msg: text, option: options);
+                await Message.SendPhoto(botClient: botClient, chatId: update.CallbackQuery.From.Id, msg: text, filePath: "Images/Catalog.jpg", option: options);
             }
             catch (Exception ex)
             {
