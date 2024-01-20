@@ -11,8 +11,8 @@ namespace Shop_TG.DAL.Headers
     public enum ShopItemBtnHeader
     {
         GetDetails = 2000,
-        BuyItemByCard = 2001,
-        BuyItemByCrypto = 2002,
-        PaymentComplete = 2003
+        BuyItemByCard,
+        BuyItemByCrypto,
+        PaymentComplete
     }
 }

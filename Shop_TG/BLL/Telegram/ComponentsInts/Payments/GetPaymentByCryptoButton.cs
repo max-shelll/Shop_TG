@@ -24,22 +24,25 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
     public class GetPaymentByCryptoButton
     {
         private readonly PaymentRepository _paymentsRepo;
+        private readonly ShopItemRepository _shopRepo;
 
-        public GetPaymentByCryptoButton(PaymentRepository paymentsRepo)
+        public GetPaymentByCryptoButton(PaymentRepository paymentsRepo, ShopItemRepository shopRepo)
         {
             _paymentsRepo = paymentsRepo;
+            _shopRepo = shopRepo;
         }
 
-        [InlineCallbackHandler<ShopItemBtnHeader>(ShopItemBtnHeader.BuyItemByCard)]
+        [InlineCallbackHandler<ShopItemBtnHeader>(ShopItemBtnHeader.BuyItemByCrypto)]
         public async Task Execute(ITelegramBotClient botClient, Update update)
         {
             try
             {
                 var command = InlineCallback<PaymentsBtnParams>.GetCommandByCallbackOrNull(update.CallbackQuery.Data);
+                var shopItem = await _shopRepo.GetById(command.Data.ItemId);
 
                 var payments = await _paymentsRepo.GetById(0);
 
-                string text = $"🎯 **Реквизиты:** `{payments.Crypto}`\n**К оплате:** {command.Data.Price}";
+                string text = $"🎯 **Реквизиты:** `{payments.Crypto}`\n**Товар:** `{shopItem.Name}`\n**К оплате:** {shopItem.Price}";
 
                 var options = new OptionMessage()
                 {

@@ -70,7 +70,7 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Admin.ShopItems
 
                 var name = text[0];
                 var description = text[1];
-                var price = int.Parse(text[2]);
+                var price = text[2];
 
                 var shopItem = new ShopItem()
                 {

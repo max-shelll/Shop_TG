@@ -11,5 +11,6 @@ namespace Shop_TG.DAL.Configs
         public long OwnerId { get; set; }
         public List<long> AdminIds { get; set; }
         public long SellerId { get; set; }
+        public string Support {get; set;}
     }
 }

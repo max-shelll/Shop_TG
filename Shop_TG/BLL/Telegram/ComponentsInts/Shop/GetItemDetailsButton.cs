@@ -50,8 +50,8 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
                 {
                     MenuInlineKeyboardMarkup = MenuGenerator.InlineKeyboard(2, new()
                     {
-                        new InlineCallback("Оплатить картой 💳", ShopItemBtnHeader.BuyItemByCard, new PaymentsBtnParams(item.Price, item.Name)),
-                        new InlineCallback("Оплатить криптой 🍘", ShopItemBtnHeader.BuyItemByCrypto, new PaymentsBtnParams(item.Price, item.Name)),
+                        new InlineCallback("Оплатить картой 💳", ShopItemBtnHeader.BuyItemByCard, new PaymentsBtnParams(item.Id)),
+                        new InlineCallback("Оплатить криптой 🍘", ShopItemBtnHeader.BuyItemByCrypto, new PaymentsBtnParams(item.Id)),
                     }),
                     ParseMode = ParseMode.Markdown,
                 };

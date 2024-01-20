@@ -24,10 +24,12 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
     public class GetPaymentByCardButton
     {
         private readonly PaymentRepository _paymentsRepo;
+        private readonly ShopItemRepository _shopRepo;
 
-        public GetPaymentByCardButton(PaymentRepository paymentsRepo)
+        public GetPaymentByCardButton(PaymentRepository paymentsRepo, ShopItemRepository shopRepo)
         {
             _paymentsRepo = paymentsRepo;
+            _shopRepo = shopRepo;
         }
 
         [InlineCallbackHandler<ShopItemBtnHeader>(ShopItemBtnHeader.BuyItemByCard)]
@@ -36,16 +38,17 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
             try
             {
                 var command = InlineCallback<PaymentsBtnParams>.GetCommandByCallbackOrNull(update.CallbackQuery.Data);
+                var shopItem = await _shopRepo.GetById(command.Data.ItemId);
 
                 var payments = await _paymentsRepo.GetById(0);
 
-                string text = $"🎯 **Реквизиты:** `{payments.Card}`\n**К оплате:** {command.Data.Price}";
+                string text = $"🎯 **Реквизиты:** `{payments.Card}`\n**Товар:** `{shopItem.Name}`\n**К оплате:** {shopItem.Price}";
 
                 var options = new OptionMessage()
                 {
                     MenuInlineKeyboardMarkup = MenuGenerator.InlineKeyboard(1, new()
                     {
-                        new InlineCallback("✔ Подтвердить оплату", ShopItemBtnHeader.PaymentComplete, command.Data),
+                        new InlineCallback("✔ Подтвердить оплату", ShopItemBtnHeader.PaymentComplete, new PaymentsBtnParams(shopItem.Id)),
                     }),
                     ParseMode = ParseMode.Markdown,
                 };

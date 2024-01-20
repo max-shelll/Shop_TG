@@ -27,10 +27,12 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
     public class PaymentCompleteButton
     {
         private readonly Config _config;
+        private readonly ShopItemRepository _shopRepo;
 
-        public PaymentCompleteButton(Config config)
+        public PaymentCompleteButton(Config config, ShopItemRepository shopRepo)
         {
             _config = config;
+            _shopRepo = shopRepo;
         }
 
         [InlineCallbackHandler<ShopItemBtnHeader>(ShopItemBtnHeader.PaymentComplete)]
@@ -39,10 +41,11 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
             try
             {
                 var command = InlineCallback<PaymentsBtnParams>.GetCommandByCallbackOrNull(update.CallbackQuery.Data);
+                var shopItem = await _shopRepo.GetById(command.Data.ItemId);
 
                 await Message.NotifyFromCallBack(botClient, update.CallbackQuery.Id, "Наш менеджер скоро с вами свяжется!");
 
-                await SendMessageToWithdrawaler(botClient, update, command.Data);
+                await SendMessageToWithdrawaler(botClient, update, shopItem);
             }
             catch (Exception ex)
             {
@@ -50,7 +53,7 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
             }
         }
 
-        private async Task SendMessageToWithdrawaler(ITelegramBotClient botClient, Update update, PaymentsBtnParams btnParams)
+        private async Task SendMessageToWithdrawaler(ITelegramBotClient botClient, Update update, ShopItem shopItem)
         { 
             try
             {
@@ -58,8 +61,8 @@ namespace Shop_TG.BLL.Telegram.ComponentsInts.Shop
 
                 string text =
                 $"""
-                **@{callback.From.Username}** купил товар: {btnParams.ItemName}
-                **Заплатил:** {btnParams.Price}
+                **@{callback.From.Username}** купил товар: {shopItem.Name}
+                **Заплатив:** {shopItem.Price}
                 """;
 
                 await Message.Send(botClient: botClient, chatId: _config.Staff.SellerId, msg: text, option: new() { ParseMode = ParseMode.Markdown });
